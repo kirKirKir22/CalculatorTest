@@ -1,4 +1,4 @@
-package com.example.calculatorTest.calculatorTest.util;
+package com.example.calculatorTest.calculatorTest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

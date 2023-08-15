@@ -1,6 +1,11 @@
 package com.example.calculatorTest.calculatorTest.service;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,68 +15,59 @@ class CalculatorServiceImplTest {
     @Test
     void helloCalculator__returnWelcomeString() {
         String result = underTest.helloCalculator();
-        assertEquals("Добро пожаловать в калькулятор", result);// почему байт?
+        assertEquals("Добро пожаловать в калькулятор", result);
     }
 
     @Test
-    void addTwoNumbers_addPositiveNumbers() {
+    void addTwoNumbers_num1AndNum2Positive_resultPositive() {
         var result = underTest.addTwoNumbers(100, 100);
         assertEquals(200, result);
     }
 
     @Test
-    void addTwoNumbers_addUpNegativeNumbers() {
-        var result = underTest.addTwoNumbers(-100, 100);
-        assertEquals(0, result);
+    void addTwoNumbers_num1AndNum2Negative_resultNegative() {
+        var result = underTest.addTwoNumbers(-100, -100);
+        assertEquals(-200, result);
 
     }
 
     @Test
-    void AddTwoNumbers_Overflow() {
-        int bigNum = Integer.MAX_VALUE;
-        int result = underTest.addTwoNumbers(bigNum, 1);
+    void AddTwoNumbers_num1AndNum2_doesNotIncreaseIntInSum() {
+        int result = underTest.addTwoNumbers(Integer.MAX_VALUE - 1, 2);
+        assertEquals(Integer.MAX_VALUE + 1, result);
 
-        assertTrue(result < bigNum);
-        assertFalse(result > bigNum);
     }
 
     @Test
-    void subtractTwoNumbers_positive() {
+    void subtractTwoNumbers_num1AndNum2Positive_resultPositive() {
         int result = underTest.subtractTwoNumbers(10, 5);
         assertEquals(5, result);
     }
 
     @Test
-    void subtractTwoNumbers_negative() {
-        int result = underTest.subtractTwoNumbers(5, 10);
+    void subtractTwoNumbers_num1AndNum2Negative_resultNegative() {
+        int result = underTest.subtractTwoNumbers(-10, -5);
         assertEquals(-5, result);
     }
 
     @Test
-    void subtractTwoNumbers_negativeNegative() {
-        int result = underTest.subtractTwoNumbers(-5, -10);
-        assertEquals(5, result);
+    void subtractTwoNumbers_num1AndNum2_doesNotIncreaseIntInSum() {
+        int result = underTest.subtractTwoNumbers(0, -(Integer.MAX_VALUE + 1));
+        assertEquals((-Integer.MAX_VALUE - 1), result);
     }
 
     @Test
-    void multiplyTwoNumbers_Positive() {
+    void multiplyTwoNumbers_num1AndNum2Positive_resultPositive() {
         int result = underTest.multiplyTwoNumbers(5, 5);
         assertEquals(25, result);
 
     }
 
     @Test
-    void multiplyTwoNumbers_Negative() {
-        int result = underTest.multiplyTwoNumbers(-5, 5);
-        assertEquals(-25, result);
+    void multiplyTwoNumbers_num1AndNum2Negative_resultPositive() {
+        int result = underTest.multiplyTwoNumbers(-5, -5);
+        assertEquals(25, result);
 
-    }
-
-    @Test
-    void MultiplyTwoNumbers_MaxValueCheck() {
-
-        int result = underTest.multiplyTwoNumbers(20_000_00, 20_000_00);
-        assertTrue(result < Integer.MAX_VALUE);
     }
 
     @Test
@@ -92,4 +88,64 @@ class CalculatorServiceImplTest {
         assertThrows(IllegalArgumentException.class, () -> underTest.divideTwoNumbers(2, 0));
 
     }
+
+    @ParameterizedTest
+    @MethodSource("numsForAddTwoNumbers")
+    void AddTwoNumbers__returnSum(int num1, int num2, int expectedResult) {
+        var result = underTest.addTwoNumbers(num1, num2);
+        assertEquals(expectedResult, result);
+
+    }
+
+    private static Stream<Arguments> numsForAddTwoNumbers() {
+        return Stream.of(
+                Arguments.of(2, 2, 4),
+                Arguments.of(-5, -5, -10)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("numsForSubtractTwoNumbers")
+    void subtractTwoNumbers__returnResidual(int num1, int num2, int expectedResult) {
+        var result = underTest.subtractTwoNumbers(num1, num2);
+        assertEquals(expectedResult, result);
+    }
+
+    private static Stream<Arguments> numsForSubtractTwoNumbers() {
+        return Stream.of(
+                Arguments.of(10, 10, 0),
+                Arguments.of(10, -10, 20)
+
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("numsFormultiplyTwoNumbers")
+    void multiplyTwoNumbers_returnMultiplicationResult(int num1, int num2, int expectedResult){
+        var result = underTest.multiplyTwoNumbers(num1,num2);
+        assertEquals(expectedResult,result);
+    }
+    private static Stream<Arguments> numsFormultiplyTwoNumbers(){
+        return Stream.of(
+                Arguments.of(2,2,4),
+                Arguments.of(-2,-2,4)
+        );
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("numsForDivideTwoNumbers")
+    void divideTwoNumbers__returnDouble(int num1, int num2, double expectedResult) {
+        var result = underTest.divideTwoNumbers(num1, num2);
+        assertEquals(expectedResult, result);
+
+    }
+
+    private static Stream<Arguments> numsForDivideTwoNumbers() {
+        return Stream.of(
+                Arguments.of(4, 2, 2),
+                Arguments.of(5, 2, 2.5)
+        );
+    }
+
 }
