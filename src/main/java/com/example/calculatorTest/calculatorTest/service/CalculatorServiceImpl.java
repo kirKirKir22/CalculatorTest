@@ -12,14 +12,14 @@ public class CalculatorServiceImpl implements CalculatorService {
     }
 
     @Override
-    public int addTwoNumbers(int num1, int num2) {
+    public long addTwoNumbers(int num1, int num2) {
 
         int result = num1 + num2;
         return result;
     }
 
     @Override
-    public int subtractTwoNumbers(int num1, int num2) {
+    public long subtractTwoNumbers(int num1, int num2) {
 
         int result = num1 - num2;
         return result;
@@ -27,7 +27,7 @@ public class CalculatorServiceImpl implements CalculatorService {
     }
 
     @Override
-    public int multiplyTwoNumbers(int num1, int num2) {
+    public long multiplyTwoNumbers(int num1, int num2) {
 
         int result = num1 * num2;
         return result;

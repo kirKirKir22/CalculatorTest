@@ -33,39 +33,39 @@ class CalculatorServiceImplTest {
 
     @Test
     void AddTwoNumbers_num1AndNum2_doesNotIncreaseIntInSum() {
-        int result = underTest.addTwoNumbers(Integer.MAX_VALUE - 1, 2);
-        assertEquals(Integer.MAX_VALUE + 1, result);
+        var result = underTest.addTwoNumbers(Integer.MIN_VALUE - 1, 2);
+        assertEquals(Integer.MIN_VALUE + 1, result);
 
     }
 
     @Test
     void subtractTwoNumbers_num1AndNum2Positive_resultPositive() {
-        int result = underTest.subtractTwoNumbers(10, 5);
+        var result = underTest.subtractTwoNumbers(10, 5);
         assertEquals(5, result);
     }
 
     @Test
     void subtractTwoNumbers_num1AndNum2Negative_resultNegative() {
-        int result = underTest.subtractTwoNumbers(-10, -5);
+        var result = underTest.subtractTwoNumbers(-10, -5);
         assertEquals(-5, result);
     }
 
     @Test
     void subtractTwoNumbers_num1AndNum2_doesNotIncreaseIntInSum() {
-        int result = underTest.subtractTwoNumbers(0, -(Integer.MAX_VALUE + 1));
-        assertEquals((-Integer.MAX_VALUE - 1), result);
+        var result = underTest.subtractTwoNumbers(0, -Integer.MIN_VALUE + 1);
+        assertEquals((Integer.MIN_VALUE - 1), result);
     }
 
     @Test
     void multiplyTwoNumbers_num1AndNum2Positive_resultPositive() {
-        int result = underTest.multiplyTwoNumbers(5, 5);
+        var result = underTest.multiplyTwoNumbers(5, 5);
         assertEquals(25, result);
 
     }
 
     @Test
     void multiplyTwoNumbers_num1AndNum2Negative_resultPositive() {
-        int result = underTest.multiplyTwoNumbers(-5, -5);
+        var result = underTest.multiplyTwoNumbers(-5, -5);
         assertEquals(25, result);
 
     }
